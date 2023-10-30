@@ -1,0 +1,118 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 10/22/2023 12:55:59 AM
+// Design Name: 
+// Module Name: CU
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module CU(
+input logic[31:0] inst,
+output logic[4:0] rs1,
+output logic[4:0] rs2,
+output logic[4:0] rd,
+output logic Regwrite,
+output logic s_mux,
+output logic wb_mux,
+output logic op_b_sel,
+output logic[3:0] aluop
+);
+logic[2:0] func3;
+logic[6:0] func7;
+
+assign rs1=inst[19:14];
+assign rs2=inst[24:20];
+assign rd=inst[11:7];
+assign func3=inst[14:12];
+assign func7=inst[31:25];
+
+always_comb begin
+    case(inst[6:0])
+        7'b0110011://R type instruction  
+                begin
+                Regwrite=1;
+                s_mux=0;
+                wb_mux=1;
+                op_b_sel=0;
+                aluop={func7[6],func3};
+            end
+
+         7'b0010011://I-Type 
+                   begin   
+                   Regwrite=1;
+                   s_mux=0;
+                   wb_mux=1;
+                   op_b_sel=1;
+                   aluop={func7[6]==1'b0,func3};
+             end
+    
+        7'b00010011://load Instruction
+                    begin
+                    Regwrite=1;
+                    s_mux=0;
+                    wb_mux=1;
+                    op_b_sel=1;
+                    aluop={func7[6]==1'b0,func3};
+              end
+        
+        7'b0100011://S-tpe Instruction
+                       begin
+                       Regwrite=0;
+                       s_mux=1;
+                       wb_mux=0;
+                       op_b_sel=0;
+                       aluop={func7[6]==1'b0,func3};
+               end
+                
+        7'b1100111://branch Instruction
+                        begin
+                        Regwrite=0;
+                        s_mux=0;
+                        wb_mux=0;
+                        op_b_sel=0;
+                        aluop={func7[6]==1'b0,func3};
+                end
+        
+        7'b0110111://u_type Instruction
+                        begin
+                        Regwrite=1;
+                        s_mux=0;
+                        wb_mux=1;
+                        op_b_sel=1;
+                        aluop={func7[6]==1'b0,func3==3'b000};
+                end
+        
+        7'b1101111://uj_type Instruction
+                        begin
+                        Regwrite=1;
+                        s_mux=0;
+                        wb_mux=1;
+                        op_b_sel=1;
+                        aluop={func7[6]==1'b0,func3==3'b000};
+                end
+              default://unknown opcode
+                         begin
+                         Regwrite=0;
+                         s_mux=0;
+                         wb_mux=0;
+                         op_b_sel=0;
+                         aluop={func7[6]==1'b0,func3==3'b000};
+                         end
+              endcase
+      end
+        
+endmodule
