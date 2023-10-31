@@ -34,7 +34,7 @@ output logic[3:0] aluop
 logic[2:0] func3;
 logic[6:0] func7;
 
-assign rs1=inst[19:14];
+assign rs1=inst[19:15];
 assign rs2=inst[24:20];
 assign rd=inst[11:7];
 assign func3=inst[14:12];
