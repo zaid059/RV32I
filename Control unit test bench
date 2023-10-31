@@ -1,0 +1,88 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 10/31/2023 12:31:36 AM
+// Design Name: 
+// Module Name: CU_tb
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module CU_tb();
+
+  // Inputs
+  logic [31:0] inst;
+  
+  // Outputs
+  logic [4:0] rs1;
+  logic [4:0] rs2;
+  logic [4:0] rd;
+  logic Regwrite;
+  logic s_mux;
+  logic wb_mux;
+  logic op_b_sel;
+  logic [3:0] aluop;
+
+  // Instantiate the CU module
+  CU dut (
+    .inst(inst),
+    .rs1(rs1),
+    .rs2(rs2),
+    .rd(rd),
+    .Regwrite(Regwrite),
+    .s_mux(s_mux),
+    .wb_mux(wb_mux),
+    .op_b_sel(op_b_sel),
+    .aluop(aluop)
+  );
+
+  // Stimulus generation
+  initial begin
+    // Test case 1: R-type instruction
+    inst = 32'h004322B3; //rs1=6,rs2=4,rd=6,aluop=2
+    #10;
+    
+    // Test case 2: I-type instruction
+    inst = 32'h12345678; // Example I-type instruction
+    #10;
+
+    // Test case 3: Load instruction
+    inst = 32'hAABBCCDD; // Example load instruction
+    #10;
+
+    // Test case 4: S-type instruction
+    inst = 32'h11223344; // Example S-type instruction
+    #10;
+
+    // Test case 5: Branch instruction
+    inst = 32'hABCDEF01; // Example branch instruction
+    #10;
+
+    // Test case 6: U-type instruction
+    inst = 32'hFEDCBA98; // Example U-type instruction
+    #10;
+
+    // Test case 7: Unknown opcode
+    inst = 32'h87654321; // Unknown opcode
+    #10;
+
+    // Add more test cases as needed
+
+    // Terminate simulation
+    $finish;
+  end
+
+endmodule
+
