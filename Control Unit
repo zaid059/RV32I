@@ -60,7 +60,7 @@ always_comb begin
                    aluop={func7[6]==1'b0,func3};
              end
     
-        7'b00010011://load Instruction
+        7'b0000011://load Instruction
                     begin
                     Regwrite=1;
                     s_mux=0;
