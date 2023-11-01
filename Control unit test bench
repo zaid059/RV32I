@@ -22,10 +22,10 @@
 
 module CU_tb();
 
-  // Inputs
+  //Inputs
   logic [31:0] inst;
   
-  // Outputs
+  //Outputs
   logic [4:0] rs1;
   logic [4:0] rs2;
   logic [4:0] rd;
@@ -37,52 +37,50 @@ module CU_tb();
 
   // Instantiate the CU module
   CU dut (
-    .inst(inst),
-    .rs1(rs1),
-    .rs2(rs2),
-    .rd(rd),
-    .Regwrite(Regwrite),
-    .s_mux(s_mux),
-    .wb_mux(wb_mux),
-    .op_b_sel(op_b_sel),
-    .aluop(aluop)
+        .inst(inst),
+        .rs1(rs1),
+        .rs2(rs2),
+        .rd(rd),
+        .Regwrite(Regwrite),
+        .s_mux(s_mux),
+        .wb_mux(wb_mux),
+        .op_b_sel(op_b_sel),
+        .aluop(aluop)
   );
 
   // Stimulus generation
-  initial begin
-    // Test case 1: R-type instruction
-    inst = 32'h004322B3; //rs1=6,rs2=4,rd=6,aluop=2
+  initial 
+  begin
+    //R-type instruction
+    inst = 32'h004322B3; //rs1=6,rs2=4,rd=6,aluop=2  '0000000 00100 00110 010 00101 0110011'
     #10;
     
-    // Test case 2: I-type instruction
-    inst = 32'h12345678; // Example I-type instruction
+    // I-type instruction
+    inst = 32'h26048413; // 0010011 00000 01001 000 01000 0010011
     #10;
 
-    // Test case 3: Load instruction
-    inst = 32'hAABBCCDD; // Example load instruction
+    //  Load instruction
+    inst = 32'h26048403; //  0010011 00000 01001 000 01000  0000011
     #10;
 
-    // Test case 4: S-type instruction
-    inst = 32'h11223344; // Example S-type instruction
+    //  S-type instruction
+    inst = 32'h3000F1A3; // 0011000 00000 00001 111 00011 0100011
     #10;
 
-    // Test case 5: Branch instruction
-    inst = 32'hABCDEF01; // Example branch instruction
+    // Branch instruction
+    inst = 32'h6200E7; // 0000000 00110 00100 000 00001 1100111
     #10;
 
-    // Test case 6: U-type instruction
-    inst = 32'hFEDCBA98; // Example U-type instruction
+    // U-type instruction
+    inst = 32'hA000B7; // 0000000 01010 00000 000 00001 0110111
     #10;
 
     // Test case 7: Unknown opcode
     inst = 32'h87654321; // Unknown opcode
     #10;
 
-    // Add more test cases as needed
-
-    // Terminate simulation
+    // Terminate
     $finish;
   end
 
 endmodule
-
