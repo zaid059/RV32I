@@ -1,0 +1,6 @@
+00500093
+00150233
+
+This file is made by the following step
+select simulation source as we create a testbench file
+now select the file type for normal testbench we select systemverilog but for this we select memory in the same menu
