@@ -1,0 +1,57 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 11/09/2023 03:20:10 PM
+// Design Name: 
+// Module Name: register
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module register(
+input logic clk,   
+input logic rst,
+input logic  WE3,
+input logic [4:0] RS1, 
+input logic [4:0] RS2, 
+input logic [4:0] rd,
+
+input logic [31:0] WD3,
+output logic [31:0] RD1,
+output logic [31:0] RD2
+);
+
+logic i; 
+// Declare memory
+logic [31:0] register [0:31];
+
+// Write
+always @(posedge clk or negedge rst) begin
+  if (!rst) begin
+    // Asynchronous reset
+    for (int i = 0; i < 32; i = i + 1) begin
+      register[i] <= 32'b0;
+    end
+    end 
+  else if (WE3) begin
+    register[rd] <= WD3;
+  end
+end
+
+// Asynchronous Read
+        assign RD1 = (RS1 == 0) ? 32'b0 : register[RS1];
+        
+        assign RD2 = (RS2 == 0) ? 32'b0 : register[RS2];
+endmodule
