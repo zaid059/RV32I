@@ -26,6 +26,7 @@ input rst,
 output [31:0] writeback_wire 
 );
 
+
 logic [31:0] pc_wire;
 logic [31:0] add_wire;
 logic [31:0] inst_wire;
@@ -33,7 +34,7 @@ logic [4:0] rs1_wire;
 logic [4:0] rs2_wire;
 logic [4:0] rd_wire;
 logic regwrite_w;
-logic smux_w;
+logic smem_w;
 logic wbmux_w;
 logic op_b_sel_w;
 logic [3:0] aluop_wire;
@@ -47,9 +48,9 @@ logic [3:0] WM_wire;
 
 
 
-pc_adder adder1(
-            .a(32'b100),
-            .b(pc_wire),
+  pc_adder adder1(
+            .a(pc_wire),
+            .b(32'd4),
             .c(add_wire)
             );
 
@@ -58,7 +59,7 @@ pcounter pc(
         .clk(clk),
         .rst(rst),
         .pc_out(pc_wire)
-        );    
+        );  
            
 inst_mem inst(
             .A(pc_wire),
@@ -79,7 +80,7 @@ CU CU(
         .rs2(rs2_wire),
         .rd(rd_wire),
         .Regwrite(regwrite_w),
-        .s_mux(smux_w),
+        .s_mem(smem_w),
         .wb_mux(wbmux_w),
         .op_b_sel(op_b_sel_w),
         .aluop(aluop_wire),
@@ -117,14 +118,14 @@ ALU alu(
         .A(alu_wire),
         .WD(RD2_wire),
         .clk(clk),
-        .WE(smux_w),
+        .WE(smem_w),
         .RD(datamem_wire),
         .WM(WM_wire)
  );
  
  mux mux_datamem(
-         .a(alu_wire),
-         .b(datamem_wire),
+         .a(datamem_wire),
+         .b(alu_wire),
          .s(wbmux_w),
          .c(writeback_wire)
     );
