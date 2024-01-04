@@ -22,11 +22,11 @@
 
 module pcounter(
 input logic[31:0] pc_in,
-input clk,
-input rst,
+input logic clk,
+input logic rst,
 output logic[31:0] pc_out);
 
-always_ff @(posedge clk)
+always @(posedge clk)
 begin
 if(rst==1'b0)
 begin
@@ -35,7 +35,9 @@ end
 else
 begin
 pc_out<=pc_in;
+
 end
 end
 
 endmodule
+  
