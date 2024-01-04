@@ -51,5 +51,5 @@ module data_mem(
     end
 end
 
- assign RD =  datamem[A]; 
+ assign RD =datamem[A]; 
 endmodule
