@@ -26,7 +26,7 @@ output logic[4:0] rs1,
 output logic[4:0] rs2,
 output logic[4:0] rd,
 output logic Regwrite,
-output logic s_mux,
+output logic s_mem,
 output logic wb_mux,
 output logic op_b_sel,
 output logic[3:0] aluop,
@@ -46,30 +46,30 @@ always_comb begin
         7'b0110011://R type instruction  
                 begin
                 Regwrite=1;
-                s_mux=0;
+                s_mem=0;
                 wb_mux=1;
                 op_b_sel=0;
-                aluop={func7[6],func3};
+                aluop={func7[5],func3};
                 WM=4'b0000;
             end
 
          7'b0010011://I-Type 
                    begin   
                    Regwrite=1;
-                   s_mux=0;
+                   s_mem=0;
                    wb_mux=1;
                    op_b_sel=1;
-                   aluop={func7[6]==1'b0,func3};
+                   aluop={1'b0,func3};
                     WM=4'b0000;
              end
     
         7'b0000011://load Instruction
                     begin
                     Regwrite=1;
-                    s_mux=0;
-                    wb_mux=1;
+                    s_mem=0;
+                    wb_mux=0;
                     op_b_sel=1;
-                    aluop={func7[6]==1'b0,func3};
+                    aluop={1'b0,func3};
                      WM=4'b0000;
                     
               end
@@ -77,49 +77,49 @@ always_comb begin
         7'b0100011://S-tpe Instruction
                        begin
                        Regwrite=0;
-                       s_mux=1;
+                       s_mem=1;
                        wb_mux=0;
                        op_b_sel=1;
-                       aluop={func7[6]==1'b0,func3};
+                       aluop=func3;
                         WM=4'b1111;
                end
                 
         7'b1100111://branch Instruction
                         begin
                         Regwrite=0;
-                        s_mux=0;
+                        s_mem=0;
                         wb_mux=0;
-                        op_b_sel=1;
-                        aluop={func7[6]==1'b0,func3};
+                        op_b_sel=0;
+                        aluop=func3;
                          WM=4'b0000;
                 end
         
         7'b0110111://u_type Instruction
                         begin
                         Regwrite=1;
-                        s_mux=0;
+                        s_mem=0;
                         wb_mux=1;
                         op_b_sel=1;
-                        aluop={func7[6]==1'b0,func3==3'b000};
+                        aluop=4'b0000;
                          WM=4'b0000;
                 end
         
         7'b1101111://uj_type Instruction
                         begin
                         Regwrite=1;
-                        s_mux=0;
+                        s_mem=0;
                         wb_mux=1;
                         op_b_sel=1;
-                        aluop={func7[6]==1'b0,func3==3'b000};
+                        aluop=4'b0000;
                          WM=4'b0000;
                 end
               default://unknown opcode
                          begin
                          Regwrite=0;
-                         s_mux=0;
+                         s_mem=0;
                          wb_mux=0;
                          op_b_sel=0;
-                         aluop={func7[6]==1'b0,func3==3'b000};
+                         aluop=4'b0000;
                          WM=4'b0000;
                          end
               endcase
