@@ -25,29 +25,39 @@ module rv32i_tb();
 // Inputs
  logic clk;
  logic rst;
- logic[31:0] writeback_wire;
-
+ logic [31:0] writeback_wire;
+ logic [31:0] temp;
+ logic [31:0] pcadre;
+ logic [3:0] aluresl;
+ logic [31:0] pcout;
+ 
   // Instantiate the DUT
   rv32i_top dut (
     .clk(clk),
     .rst(rst),
-    .writeback_wire(writeback_wire)
+    .writeback_wire(writeback_wire),
+    .temp(temp),
+    .pcadre(pcadre),
+    .aluresl(aluresl),
+    .pcout(pcout)
   );
 
 
   // Clock generation
   initial begin
     clk = 0;
-    forever #5 clk = ~clk;
+    forever #5 
+    clk=~clk;
   end
 
  initial begin
-        rst = 1;
+        rst=1;
+        #10
+        rst=0;
         #10;
-        rst = 0;
-        #10;
-        
+        rst=1;
+        #150; 
     end
-  
+    
   
 endmodule
