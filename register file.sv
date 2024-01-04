@@ -35,7 +35,7 @@ output logic [31:0] RD2
 
 logic i; 
 // Declare memory
-logic [31:0] register [0:31];
+logic [31:0] register [31:0];
 
 // Write
 always @(posedge clk or negedge rst) begin
