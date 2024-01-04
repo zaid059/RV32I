@@ -23,10 +23,10 @@
 module mux(
 input logic [31:0] a,
 input logic [31:0] b,
-input logic s,
+input logic sel,
 output logic [31:0] c
 
 );
 
-assign c=(s==1'b1) ? b:a; 
+assign c=(sel==1'b1) ? b:a; 
 endmodule
