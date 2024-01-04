@@ -21,9 +21,13 @@
 
 
 module rv32i_top(
-input clk,
-input rst,
-output [31:0] writeback_wire 
+input logic clk,
+input logic rst,
+output logic [31:0] writeback_wire,
+output logic [31:0] temp,
+output logic [31:0] pcadre,
+output logic [31:0] pcout,
+output logic [3:0] aluresl
 );
 
 
@@ -46,11 +50,14 @@ logic [31:0] alu_wire;
 logic [31:0] datamem_wire;
 logic [3:0] WM_wire;
 
+assign temp = inst_wire;
+assign pcadre= add_wire;
+assign aluresl= aluop_wire;
+assign pcout=pc_wire;
 
-
-  pc_adder adder1(
+pc_adder add_1(
             .a(pc_wire),
-            .b(32'd4),
+            .b(32'b100),
             .c(add_wire)
             );
 
@@ -102,12 +109,12 @@ register rg(
  mux mux_imm(
         .a(RD2_wire),
         .b(imm_gen_wire),
-        .s(op_b_sel_w),
+        .sel(op_b_sel_w),
         .c(mux_wire)
  
  );
          
-ALU alu(
+ALU alu1(
         .A(RD1_wire),
         .B(mux_wire),
         .opcode(aluop_wire),
@@ -126,7 +133,8 @@ ALU alu(
  mux mux_datamem(
          .a(datamem_wire),
          .b(alu_wire),
-         .s(wbmux_w),
+         .sel(wbmux_w),
          .c(writeback_wire)
     );
+    
 endmodule
