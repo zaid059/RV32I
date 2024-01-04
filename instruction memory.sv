@@ -21,20 +21,17 @@
 
 
 module inst_mem(
- input logic[31:0]A,
+ input logic[31:0] A,
  input logic[31:0]WD,
  input logic clk,
  output logic[31:0]RD,
  input logic [3:0] WM
 );
-
   // Memory for instructions
-  logic [31:0] instr_memory [0:1023];
-  
+  logic [31:0] instr_memory[0:1023];
+ 
 initial begin
   $readmemh("imem.mem",instr_memory);
 end
- 
- assign RD = instr_memory[A]; 
- 
+assign RD=instr_memory[A[31:2]];
 endmodule
